@@ -1,0 +1,85 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - staging
+  pull_request:
+    branches:
+      - main
+  release:
+    types: [published]
+
+jobs:
+  install-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run tests
+        run: |
+          pytest
+
+  build:
+    needs: install-and-test
+    runs-on: ubuntu-latest
+    if: success()
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+          
+      - name: Build application
+        run: |
+          echo "Building the application..."
+          # Replace with your build commands
+
+  deploy-to-staging:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/staging'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to staging
+        env:
+          STAGING_API_TOKEN: ${{ secrets.EC2_SSH_KEY}} # Use the secret here
+        run: |
+          echo "Deploying to staging..."
+          # Replace with your deployment commands for staging, using $STAGING_API_TOKEN
+
+  deploy-to-production:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to production
+        env:
+          PRODUCTION_DEPLOYMENT_KEY: ${{ secrets.EC2_SSH_KEY }} # Use the secret here
+        run: |
+          echo "Deploying to production..."
+          # Replace with your deployment commands for production, using $PRODUCTION_DEPLOYMENT_KEY
