@@ -26,4 +26,8 @@
  sudo systemctl enable --now flask-app.service
  sudo systemctl status flaskapp.service
 
+ git tag v1.2.3
+ git push origin v1.2.3
+
+
 

@@ -5,7 +5,7 @@ on:
     branches:
       - staging
     tags:
-      - 'v*.*.*' # Example tag pattern for production deployment
+      - 'v*.*.*'
 
 jobs:
   install_dependencies:
@@ -17,7 +17,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.x' # Specify the Python version to use
+          python-version: '3.x'
 
       - name: Install dependencies
         run: |
@@ -34,7 +34,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.x' # Specify the Python version to use
+          python-version: '3.x'
 
       - name: Install dependencies
         run: |
@@ -80,22 +80,23 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Print GitHub Ref
+        run: |
+          echo "GitHub Ref: $GITHUB_REF"
+
       - name: Deploy to Production
         env:
-              PRIVATE_KEY: ${{ secrets.SSH_KEY }}
-              HOST_NAME:   ${{ secrets.HOST_NAME }}
-              USER_NAME:   ${{ secrets.USER_NAME }}
+          PRIVATE_KEY: ${{ secrets.SSH_KEY }}
+          HOST_NAME: ${{ secrets.HOST_NAME }}
+          USER_NAME: ${{ secrets.USER_NAME }}
         run: |
-          # Add your production deployment commands here
           echo "Deploying to production..."
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOST_NAME} "
           ls &&
-          cd Flask-Deployment/ && 
+          cd Flask-Deployment/ &&
           ls &&
           git pull &&
           sudo systemctl stop flask-app &&
-          sudo systemctldaemon-reload &&
+          sudo systemctl daemon-reload &&
           sudo systemctl start flask-app"
-          
-         
