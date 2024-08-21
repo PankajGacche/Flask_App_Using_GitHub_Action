@@ -97,7 +97,7 @@ jobs:
         run: |
           echo "Deploying to production..."
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOST_NAME} << 'EOF'
+          ssh -vvv -o StrictHostKeyChecking=no ServerAliveInterval=60 -o ServerAliveCountMax=3 -i private_key ${USER_NAME}@${HOST_NAME} << 'EOF'
 
           # Create Flask-Deployment directory if it doesn't exist
           mkdir -p Flask-Deployment
@@ -127,9 +127,9 @@ jobs:
           sudo ufw status | grep -q "Status: active" || sudo ufw enable
 
           # Add necessary firewall rules
-          # sudo ufw allow 22/tcp
-          # sudo ufw allow 80/tcp
-          # sudo ufw allow 5000/tcp
+          sudo ufw allow 22/tcp
+          sudo ufw allow 80/tcp
+          sudo ufw allow 5000/tcp
 
           # Reload UFW to apply changes
           #sudo ufw reload || true
