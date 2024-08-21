@@ -167,9 +167,9 @@ jobs:
           EOL
 
           # Reload systemd and start the service
-          sudo systemctl daemon-reload
           sudo systemctl stop flaskapp || true
-          sudo systemctl start flaskapp
+          sudo systemctl daemon-reload
           sudo systemctl enable flaskapp
+          sudo systemctl start flaskap
           EOF
           
