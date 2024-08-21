@@ -74,6 +74,7 @@ jobs:
 
   deploy_production:
     runs-on: ubuntu-latest
+    timeout-minutes: 1
     needs: build
     if: startsWith(github.ref, 'refs/tags/v')
     steps:
@@ -121,11 +122,16 @@ jobs:
           source myenv/bin/activate
           pip install flask pytest gunicorn
 
-          # Configure firewall (ensure the rules are correctly specified)
-          sudo ufw allow 22
-          sudo ufw allow 80
-          sudo ufw allow 5000
-          sudo ufw reload || true  # Continue even if ufw reload fails
+          # Check and enable UFW if it's not active
+          sudo ufw status | grep -q "Status: active" || sudo ufw enable
+
+          # Add necessary firewall rules
+          sudo ufw allow 22/tcp
+          sudo ufw allow 80/tcp
+          sudo ufw allow 5000/tcp
+
+          # Reload UFW to apply changes
+          sudo ufw reload || true
 
           # Set up Gunicorn
           gunicorn --bind 0.0.0.0:5000 src.app:app &
