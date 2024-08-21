@@ -139,9 +139,9 @@ jobs:
           sudo pkill -f 'gunicorn.*src.app:app' || true
 
           # Start Gunicorn manually for debugging
-          #source myenv/bin/activate
-          #gunicorn --bind 0.0.0.0:5000 --workers 2 --worker-class gevent src.app:app &
-          #sleep 10 # Give it some time to start
+          source myenv/bin/activate
+          gunicorn --bind 0.0.0.0:5000 --workers 2 --worker-class gevent src.app:app &
+          sleep 10 # Give it some time to start
 
           # Verify Gunicorn is running
           if ! pgrep -f 'gunicorn.*src.app:app'; then
