@@ -6,7 +6,6 @@ on:
       - staging
     tags:
       - 'v*.*.*'
-
 jobs:
   install_dependencies:
     runs-on: ubuntu-latest
