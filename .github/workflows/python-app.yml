@@ -127,9 +127,9 @@ jobs:
           sudo ufw status | grep -q "Status: active" || sudo ufw enable
 
           # Add necessary firewall rules
-          sudo ufw allow 22/tcp
-          sudo ufw allow 80/tcp
-          sudo ufw allow 5000/tcp
+          # sudo ufw allow 22/tcp
+          # sudo ufw allow 80/tcp
+          # sudo ufw allow 5000/tcp
 
           # Reload UFW to apply changes
           sudo ufw reload || true
