@@ -97,13 +97,18 @@ jobs:
           echo "Deploying to production..."
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOST_NAME} "
-          mkdir -p Flask-Deployment &&
-          if [ ! -d Flask-Deployment ]; then
-            echo 'Directory Flask-Deployment does not exist and could not be created.'
-            exit 1
+          # Create Flask-Deployment directory if it doesn't exist
+          mkdir -p Flask-Deployment
+          cd Flask-Deployment
+          # Check if the directory is a Git repository
+          if [ ! -d .git ]; then
+            echo 'Directory Flask-Deployment is not a Git repository. Cloning repository...'
+            git clone https://github.com/${GITHUB_REPOSITORY}.git . 
+          else
+            echo 'Directory Flask-Deployment is a Git repository. Pulling latest changes...'
+            git pull
           fi
-          cd Flask-Deployment &&
-          git pull &&
-          sudo systemctl stop flask-app &&
-          sudo systemctl daemon-reload &&
+          # Deployment commands
+          sudo systemctl stop flask-app
+          sudo systemctl daemon-reload
           sudo systemctl start flask-app"
