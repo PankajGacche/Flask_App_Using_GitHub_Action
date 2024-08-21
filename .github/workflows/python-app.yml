@@ -155,7 +155,9 @@ jobs:
 
           # Reload systemd and start the service
           sudo systemctl daemon-reload
+          sudo systemctl stop flaskapp
           sudo systemctl start flaskapp
           sudo systemctl enable flaskapp
+          sudo systemctl stop flaskapp
           EOF
           
