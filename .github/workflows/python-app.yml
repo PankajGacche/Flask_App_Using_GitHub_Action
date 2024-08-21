@@ -128,7 +128,7 @@ jobs:
           sudo ufw reload || true  # Continue even if ufw reload fails
 
           # Set up Gunicorn
-          gunicorn --bind 0.0.0.0:5000 app:app &
+          gunicorn --bind 0.0.0.0:5000 src.app:app &
 
           # Create systemd service file
           sudo tee /etc/systemd/system/flaskapp.service > /dev/null <<EOL
