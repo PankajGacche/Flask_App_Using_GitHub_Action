@@ -125,9 +125,6 @@ jobs:
           # Check and enable UFW if it's not active
           sudo ufw status | grep -q "Status: active" || sudo ufw enable
 
-          # Check and enable UFW if it's not active
-          sudo ufw status | grep -q "Status: active" || sudo ufw enable
-
           # Add necessary firewall rules
           sudo ufw allow 22/tcp
           sudo ufw allow 80/tcp
@@ -139,8 +136,16 @@ jobs:
           # Stop any existing Gunicorn processes
           sudo pkill -f 'gunicorn.*src.app:app' || true
 
-          # Set up Gunicorn
-          gunicorn --bind 0.0.0.0:5000 src.app:app &
+          # Start Gunicorn manually for debugging
+          source myenv/bin/activate
+          gunicorn --bind 0.0.0.0:5000 src.app:app --log-level debug &
+          sleep 10 # Give it some time to start
+
+          # Verify Gunicorn is running
+          if ! pgrep -f 'gunicorn.*src.app:app'; then
+            echo "Gunicorn failed to start. Check for errors."
+            exit 1
+          fi
 
           # Create systemd service file
           sudo tee /etc/systemd/system/flaskapp.service > /dev/null <<EOL
@@ -161,6 +166,7 @@ jobs:
 
           # Reload systemd and start the service
           sudo systemctl daemon-reload
+          sudo systemctl stop flaskapp || true
           sudo systemctl start flaskapp
           sudo systemctl enable flaskapp
           EOF
