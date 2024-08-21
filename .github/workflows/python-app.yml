@@ -167,8 +167,7 @@ jobs:
           EOL
 
           # Reload systemd and start the service
-          sudo systemctl restart flaskapp || true
           sudo systemctl daemon-reload
-          sudo systemctl enable flaskapp
+          sudo systemctl enable --now flask-app.service
           EOF
           
