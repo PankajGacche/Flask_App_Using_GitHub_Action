@@ -147,4 +147,4 @@ jobs:
           sudo systemctl daemon-reload
           sudo systemctl start flaskapp
           sudo systemctl enable flaskapp
-          EOF
+          
