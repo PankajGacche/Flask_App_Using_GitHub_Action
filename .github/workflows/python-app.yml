@@ -127,21 +127,21 @@ jobs:
           sudo ufw status | grep -q "Status: active" || sudo ufw enable
 
           # Add necessary firewall rules
-          sudo ufw allow 22/tcp
-          sudo ufw allow 80/tcp
-          sudo ufw allow 5000/tcp
+          # sudo ufw allow 22/tcp
+          # sudo ufw allow 80/tcp
+          # sudo ufw allow 5000/tcp
 
           # Reload UFW to apply changes
-          sudo ufw reload || true
+          #sudo ufw reload || true
 
           # Stop any existing Gunicorn processes or processes using port 5000
           sudo fuser -k 5000/tcp || true
           sudo pkill -f 'gunicorn.*src.app:app' || true
 
           # Start Gunicorn manually for debugging
-          source myenv/bin/activate
-          gunicorn --bind 0.0.0.0:5000 --workers 2 --worker-class gevent src.app:app &
-          sleep 10 # Give it some time to start
+          #source myenv/bin/activate
+          #gunicorn --bind 0.0.0.0:5000 --workers 2 --worker-class gevent src.app:app &
+          #sleep 10 # Give it some time to start
 
           # Verify Gunicorn is running
           if ! pgrep -f 'gunicorn.*src.app:app'; then
@@ -167,8 +167,8 @@ jobs:
           EOL
 
           # Reload systemd and start the service
-          # sudo systemctl daemon-reload
-          # sudo systemctl enable flaskapp
-          # sudo systemctl start flaskapp
+           sudo systemctl daemon-reload
+           sudo systemctl enable flaskapp
+           sudo systemctl start flaskapp
           EOF
           
