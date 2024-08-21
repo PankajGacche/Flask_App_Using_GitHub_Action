@@ -93,6 +93,7 @@ jobs:
           PRIVATE_KEY: ${{ secrets.SSH_KEY }}
           HOST_NAME: ${{ secrets.HOST_NAME }}
           USER_NAME: ${{ secrets.USER_NAME }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
           echo "Deploying to production..."
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
@@ -108,20 +109,42 @@ jobs:
             echo 'Directory Flask-Deployment is a Git repository. Pulling latest changes...'
             git pull
           fi
-          # Deployment commands
+
+          # Install necessary packages
           sudo apt update
-          sudo apt install python3
-          sudo apt install python3-pip
-          python3 -m venv myenv && source myenv/bin/activate
-          pip install flask pytest
-          pip install gunicorn
-          sudo ufw enable
+          sudo apt install -y python3 python3-pip
+
+          # Set up Python environment and install dependencies
+          python3 -m venv myenv
+          source myenv/bin/activate
+          pip install flask pytest gunicorn
+
+          # Configure firewall (ensure the rules are correctly specified)
           sudo ufw allow 22
           sudo ufw allow 80
           sudo ufw allow 5000
-          sudo ufw reload
-          gunicorn --bind 0.0.0.0:5000 app:app
-          sudo touch /etc/systemd/system/flaskapp.service
-          sudo sh -c 'printf "[Unit]\nDescription=Flask Application\nAfter=network.target\n\n[Service]\nUser=ubuntu\nGroup=ubuntu\nWorkingDirectory=/home/ubuntu/Flask-Deployment\nExecStart=/home/ubuntu/.local/bin/gunicorn --workers 3 --bind unix:flaskapp.sock app:app\nRestart=always\n\n[Install]\nWantedBy=multi-user.target\n" > /etc/systemd/system/flaskapp.service'
+          sudo ufw reload || true  # Continue even if ufw reload fails
+
+          # Set up Gunicorn
+          gunicorn --bind 0.0.0.0:5000 app:app &
+          # Create systemd service file
+          sudo tee /etc/systemd/system/flaskapp.service > /dev/null <<EOL
+          [Unit]
+          Description=Flask Application
+          After=network.target
+
+          [Service]
+          User=ubuntu
+          Group=ubuntu
+          WorkingDirectory=/home/ubuntu/Flask-Deployment
+          ExecStart=/home/ubuntu/Flask-Deployment/myenv/bin/gunicorn --workers 3 --bind unix:/home/ubuntu/Flask-Deployment/flaskapp.sock app:app
+          Restart=always
+
+          [Install]
+          WantedBy=multi-user.target
+          EOL
+          # Reload systemd and start the service
           sudo systemctl daemon-reload
-          sudo systemctl start flaskapp"
+          sudo systemctl start flaskapp
+          sudo systemctl enable flaskapp
+          EOF
