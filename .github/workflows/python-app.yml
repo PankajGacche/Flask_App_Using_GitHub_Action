@@ -119,7 +119,8 @@ jobs:
           # Set up Python environment and install dependencies
           python3 -m venv myenv
           source myenv/bin/activate
-          pip install flask pytest gunicorn
+          pip install -r requirements.txt
+          pip install gunicorn
 
           # Check and enable UFW if it's not active
           sudo ufw status | grep -q "Status: active" || sudo ufw enable
@@ -132,7 +133,8 @@ jobs:
           # Reload UFW to apply changes
           sudo ufw reload || true
 
-          # Stop any existing Gunicorn processes
+          # Stop any existing Gunicorn processes or processes using port 5000
+          sudo fuser -k 5000/tcp || true
           sudo pkill -f 'gunicorn.*src.app:app' || true
 
           # Start Gunicorn manually for debugging
