@@ -43,6 +43,7 @@ jobs:
 
       - name: Run tests
         run: |
+          export PYTHONPATH=src
           pytest
 
   build:
