@@ -170,6 +170,6 @@ jobs:
           sudo systemctl stop flaskapp || true
           sudo systemctl daemon-reload
           sudo systemctl enable flaskapp
-          sudo systemctl start flaskap
+          sudo systemctl start flaskapp
           EOF
           
