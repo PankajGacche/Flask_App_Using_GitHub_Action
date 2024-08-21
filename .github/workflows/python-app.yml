@@ -97,10 +97,12 @@ jobs:
         run: |
           echo "Deploying to production..."
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOST_NAME} "
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOST_NAME} << 'EOF'
+
           # Create Flask-Deployment directory if it doesn't exist
           mkdir -p Flask-Deployment
           cd Flask-Deployment
+
           # Check if the directory is a Git repository
           if [ ! -d .git ]; then
             echo 'Directory Flask-Deployment is not a Git repository. Cloning repository...'
@@ -127,6 +129,7 @@ jobs:
 
           # Set up Gunicorn
           gunicorn --bind 0.0.0.0:5000 app:app &
+
           # Create systemd service file
           sudo tee /etc/systemd/system/flaskapp.service > /dev/null <<EOL
           [Unit]
@@ -143,8 +146,10 @@ jobs:
           [Install]
           WantedBy=multi-user.target
           EOL
+
           # Reload systemd and start the service
           sudo systemctl daemon-reload
           sudo systemctl start flaskapp
           sudo systemctl enable flaskapp
+          EOF
           
