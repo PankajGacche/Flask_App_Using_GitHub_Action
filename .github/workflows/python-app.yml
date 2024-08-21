@@ -158,6 +158,5 @@ jobs:
           sudo systemctl stop flaskapp
           sudo systemctl start flaskapp
           sudo systemctl enable flaskapp
-          sudo systemctl stop flaskapp
           EOF
           
