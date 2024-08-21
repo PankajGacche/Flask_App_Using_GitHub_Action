@@ -109,6 +109,19 @@ jobs:
             git pull
           fi
           # Deployment commands
-          sudo systemctl stop flask-app
+          sudo apt update
+          sudo apt install python3
+          sudo apt install python3-pip
+          python3 -m venv myenv && source myenv/Scripts/activate
+          pip install flask pytest
+          pip install gunicorn
+          sudo ufw -y enable
+          sudo ufw allow 22
+          sudo ufw allow 80
+          sudo ufw allow 5000
+          sudo ufw reload
+          gunicorn --bind 0.0.0.0:5000 app:app
+          sudo touch /etc/systemd/system/flaskapp.service
+          sudo sh -c 'printf "[Unit]\nDescription=Flask Application\nAfter=network.target\n\n[Service]\nUser=ubuntu\nGroup=ubuntu\nWorkingDirectory=/home/ubuntu/Flask-Deployment\nExecStart=/home/ubuntu/Flask-Deployment/venv/bin/gunicorn --workers 3 --bind unix:flaskapp.sock app:app\nRestart=always\n\n[Install]\nWantedBy=multi-user.target\n" > /etc/systemd/system/flaskapp.service'
           sudo systemctl daemon-reload
-          sudo systemctl start flask-app"
+          sudo systemctl start flaskapp"

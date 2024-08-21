@@ -1,9 +1,10 @@
 # Flask_App_Using_GitHub_Action
 
- python3 --version
- python3 -m venv myenv
- ls
- source myenv/Scripts/activate
+# Run below commands on Source machine
+ sudo apt update
+ sudo apt install python3
+ sudo apt install python3-pip
+ python3 -m venv myenv && source myenv/Scripts/activate
  pip install flask pytest
  pip freeze > requirements.txt
  cat requirements.txt
@@ -14,11 +15,18 @@
  export PYTHONPATH=src
  push changes to repository
  ssh keygen -t rsa -b 4096 -C "Flask-App"
- sudo apt install python3 python3-pip python3-venv
- sudo ufw enable
+ # Run below commands on Deployment machine 
+ sudo apt update
+ sudo apt install python3
+ sudo apt install python3-pip
+ python3 -m venv myenv && source myenv/Scripts/activate
+ pip install flask pytest
+ pip install gunicorn
+ sudo ufw -y enable
+ sudo ufw allow 22
+ sudo ufw allow 80
  sudo ufw allow 5000
  sudo ufw reload
- sudo ufw status
  gunicorn --bind 0.0.0.0:5004 app:app
  cd /etc/systemd/system/flaskapp.service
  /ubuntu/home/Flask/venv/bin
