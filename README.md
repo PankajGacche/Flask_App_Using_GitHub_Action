@@ -1,6 +1,6 @@
 # Flask_App_Using_GitHub_Action
 
-##Setup
+## Setup
 - Python application repository on GitHub
 ![alt text](Readme_File_Images/image.png)
 
@@ -10,7 +10,7 @@
 - Created .github/workflows directory in repository and inside it created a YAML file to define the workflow
 ![alt text](Readme_File_Images/image-2.png)
 
-##Defined below workflow Steps
+## Defined below workflow Steps
 - Install Dependencies
 - run_tests
 - build
@@ -29,17 +29,17 @@
 - Created GitHub Secrets to store sensitive information required for deployments
 ![alt text](Readme_File_Images/image-11.png)
 
-##Install Dependencies: 
+## Install Dependencies: 
 - Install all necessary dependencies for the Python application using pip.
-##Run Tests: 
+## Run Tests: 
 - Execute the test suite using a framework pytest.
-##Build:
+## Build:
 - When tests pass, prepare the application for deployment.
-##Deploy to Staging: 
+## Deploy to Staging: 
 - Deploy the application to a staging environment when changes are pushed to the staging branch.
 ![alt text](Readme_File_Images/image-12.png)
-Deploy to Production: Deploy the application to production when a release is tagged.
-
+## Deploy to Production:
+- Deploy the application to production when a release is tagged.
 - Created release tag and pushed to Github
 ![alt text](Readme_File_Images/image-13.png)
 ![alt text](Readme_File_Images/image-14.png)
@@ -49,24 +49,25 @@ Deploy to Production: Deploy the application to production when a release is tag
 ![alt text](Readme_File_Images/image-16.png)
 ![alt text](Readme_File_Images/image-17.png)
 
-##Run below commands on Source machine
+## Run below commands on Source machine
 ```bash
- sudo apt update
- sudo apt install python3
- sudo apt install python3-pip
- python3 -m venv myenv && source myenv/Scripts/activate
- pip install flask pytest
- pip freeze > requirements.txt
- cat requirements.txt
- mkdir src
- create app.py file
- mkdir tests
- create test_app.py
- export PYTHONPATH=src
- push changes to repository
- ssh keygen -t rsa -b 4096 -C "Flask-App"
+sudo apt update
+sudo apt install python3
+sudo apt install python3-pip
+python3 -m venv myenv && source myenv/Scripts/activate
+pip install flask pytest
+pip freeze > requirements.txt
+cat requirements.txt
+mkdir src
+create app.py file
+mkdir tests
+create test_app.py
+export PYTHONPATH=src
+push changes to repository
+ssh keygen -t rsa -b 4096 -C "Flask-App"
 
- ##Run below commands on Deployment machine 
+ ## Run below commands on Deployment machine
+ ```bash 
  sudo apt update
  sudo apt install python3
  sudo apt install python3-pip
