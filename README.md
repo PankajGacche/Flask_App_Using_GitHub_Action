@@ -65,9 +65,9 @@ create test_app.py
 export PYTHONPATH=src
 push changes to repository
 ssh keygen -t rsa -b 4096 -C "Flask-App"
-
- ## Run below commands on Deployment machine
- ```bash 
+```
+## Run below commands on Deployment machine
+ ```bash
  sudo apt update
  sudo apt install python3
  sudo apt install python3-pip
@@ -86,6 +86,7 @@ ssh keygen -t rsa -b 4096 -C "Flask-App"
  sudo systemctl enable --now flask-app.service
  git tag v1.2.3
  git push origin v1.2.3
+ ```
 
 
 
