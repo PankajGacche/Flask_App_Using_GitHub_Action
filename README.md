@@ -1,6 +1,6 @@
 # Flask_App_Using_GitHub_Action
 
-Python application repository on GitHub
+.Python application repository on GitHub
 ![alt text](Readme_File_Images/image.png)
 
 Repository has a main branch and a staging branch
@@ -9,8 +9,8 @@ Repository has a main branch and a staging branch
 Created .github/workflows directory in repository and inside it created a YAML file to define the workflow
 ![alt text](Readme_File_Images/image-2.png)
 
-Defined below workflow Steps
-Install Dependencies
+.Defined below workflow Steps
+.Install Dependencies
 run_tests
 build
 deploy_staging
