@@ -1,20 +1,21 @@
 # Flask_App_Using_GitHub_Action
 
-.Python application repository on GitHub
+##Setup
+- Python application repository on GitHub
 ![alt text](Readme_File_Images/image.png)
 
-Repository has a main branch and a staging branch
+- Repository has a main branch and a staging branch
 ![alt text](Readme_File_Images/image-1.png)
 
-Created .github/workflows directory in repository and inside it created a YAML file to define the workflow
+- Created .github/workflows directory in repository and inside it created a YAML file to define the workflow
 ![alt text](Readme_File_Images/image-2.png)
 
-.Defined below workflow Steps
-.Install Dependencies
-run_tests
-build
-deploy_staging
-deploy_production
+##Defined below workflow Steps
+- Install Dependencies
+- run_tests
+- build
+- deploy_staging
+- deploy_production
 
 ![alt text](Readme_File_Images/image-3.png)
 ![alt text](Readme_File_Images/image-4.png)
@@ -25,25 +26,31 @@ deploy_production
 ![alt text](Readme_File_Images/image-9.png)
 ![alt text](Readme_File_Images/image-10.png)
 
-Created GitHub Secrets to store sensitive information required for deployments
+- Created GitHub Secrets to store sensitive information required for deployments
 ![alt text](Readme_File_Images/image-11.png)
 
-Install Dependencies: Install all necessary dependencies for the Python application using pip.
-Run Tests: Execute the test suite using a framework pytest.
-Build: when tests pass, prepare the application for deployment.
-Deploy to Staging: Deploy the application to a staging environment when changes are pushed to the staging branch.
+##Install Dependencies: 
+- Install all necessary dependencies for the Python application using pip.
+##Run Tests: 
+- Execute the test suite using a framework pytest.
+##Build:
+- When tests pass, prepare the application for deployment.
+##Deploy to Staging: 
+- Deploy the application to a staging environment when changes are pushed to the staging branch.
 ![alt text](Readme_File_Images/image-12.png)
 Deploy to Production: Deploy the application to production when a release is tagged.
-Created release tag and pushed to Github
+
+- Created release tag and pushed to Github
 ![alt text](Readme_File_Images/image-13.png)
 ![alt text](Readme_File_Images/image-14.png)
 ![alt text](Readme_File_Images/image-15.png)
 
-After Deployment to production, verified all files are available on Deployment server
+- After Deployment to production, verified all files are available on Deployment server
 ![alt text](Readme_File_Images/image-16.png)
 ![alt text](Readme_File_Images/image-17.png)
 
-# Run below commands on Source machine
+##Run below commands on Source machine
+```bash
  sudo apt update
  sudo apt install python3
  sudo apt install python3-pip
@@ -59,7 +66,7 @@ After Deployment to production, verified all files are available on Deployment s
  push changes to repository
  ssh keygen -t rsa -b 4096 -C "Flask-App"
 
- # Run below commands on Deployment machine 
+ ##Run below commands on Deployment machine 
  sudo apt update
  sudo apt install python3
  sudo apt install python3-pip
