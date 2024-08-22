@@ -131,6 +131,7 @@ jobs:
             echo "Gunicorn failed to start. Check for errors."
             exit 1
           fi
+          
           # Create systemd service file
           sudo tee /etc/systemd/system/flaskapp.service > /dev/null <<EOL
           [Unit]
