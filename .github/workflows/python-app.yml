@@ -140,11 +140,12 @@ jobs:
           User=ubuntu
           Group=ubuntu
           WorkingDirectory=/home/ubuntu/Flask-Deployment
-          ExecStart=/home/ubuntu/Flask-Deployment/myenv/bin/gunicorn --workers 3 --bind unix:/home/ubuntu/Flask-Deployment/flaskapp.sock src.app:app
+          ExecStart=/home/ubuntu/Flask-Deployment/myenv/bin/gunicorn --workers 2 --bind unix:/home/ubuntu/Flask-Deployment/flaskapp.sock src.app:app
           Restart=always
           [Install]
           WantedBy=multi-user.target
           EOL
+
           # Reload systemd and start the service
           sudo systemctl daemon-reload
           sudo systemctl restart flaskapp || true
